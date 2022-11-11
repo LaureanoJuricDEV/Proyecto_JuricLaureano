@@ -1,3 +1,17 @@
+//------CLASE DE MOVIMIENTOS-----//
+
+class Movimiento{
+    constructor (accion,monto){
+        this.accion=accion,
+        this.monto=monto;
+    }
+}
+
+
+const registerMovimientos=[];
+
+
+
 //VARIABLE DE BIENVENIDA
 const welcomeUser=document.getElementById("welcomeUser");
 welcomeUser.innerHTML=localStorage.getItem("Usuario") 
@@ -10,7 +24,6 @@ const btnCargar=document.getElementById("btnCargar");
 const containerCargar=document.getElementById("containerCargar");
 const saldoCargar=document.getElementById("saldoCargar");
 
-
 let saldoInicial=0;
 
 btnCargar.addEventListener("click",()=>{
@@ -19,7 +32,7 @@ btnCargar.addEventListener("click",()=>{
     containerMovimiento.style.display="none"
     containerMercado.style.display="none"
     containerWelcomeUser.style.display="none"
-   
+    registroMovimientos.innerHTML=""
 }) 
 const inputCargar=document.getElementById("inputCargar");
 const btnAcreditar=document.getElementById("btnAcreditar");
@@ -36,17 +49,16 @@ formCargar.addEventListener("submit", (e)=>{
 
     if(montoCargar<=0){
        alertMonto2();
+       formCargar.reset();
     } else{
         alertMonto1();
         let saldoActualizado=(saldoInicial+parseInt(montoCargar))
-        console.log(saldoActualizado)
+        saldoCargar.innerHTML=saldoActualizado;
         localStorage.setItem("Movimiento", JSON.stringify(registerMovimientos))
         formCargar.reset();
-       
     }
     
 })
-
 
 //FUNCION PARA LOS ALERTS   
 function alertMonto1(){
@@ -90,6 +102,7 @@ btnDebitar.addEventListener("click",(e)=>{
     containerMovimiento.style.display="none"
     containerMercado.style.display="none"
     containerWelcomeUser.style.display="none"
+    registroMovimientos.innerHTML=""
 
 })
 
@@ -103,14 +116,14 @@ formDebitar.addEventListener("submit", (e)=>{
     opcionDebitar=btnDebitar2.value;
     const debitado= new Movimiento (opcionDebitar, montoDebitar);
     registerMovimientos.push(debitado);
-    console.log(registerMovimientos)
-    
     
 
     if(montoDebitar<=0){
         alertMonto2();
      } else{
         alertMonto1();
+        let saldoActualizado=(saldoInicial+parseInt(montoDebitar))
+        saldoDebitar.innerHTML=saldoActualizado;
         localStorage.setItem("Movimiento", JSON.stringify(registerMovimientos))
         formDebitar.reset();
      }
@@ -126,25 +139,20 @@ const btnEnviar=document.getElementById("btnMovimiento");
 const containerMovimiento=document.getElementById("containerMovimiento");
 const registroMovimientos=document.getElementById("registroMovimientos");
 const inputMovimientoCargar=document.getElementById("inputMovimientoCargar");
-const inputMovimientoDebitar=document.getElementById("inputMovimientoDebitar");
 
 //RECUPUERAR DATOS DEL LOCAL STORAGE
 const recuperarArray=localStorage.getItem("Movimiento");
 
-function ricardoFort(){
-    for (let i=0; i<registerMovimientos.length;i++){
-        console.log(registerMovimientos[i])
-        
-    }
-}
 
 inputMovimientoCargar.addEventListener("click",()=>{    
+    if (registerMovimientos.length===0){
+        registroMovimientos.innerHTML="Aun no se ha realizado alguna operacion"
+    } else {
    const registroMovimientoJSON=JSON.stringify(registerMovimientos, [`accion`, `monto`]);
    registroMovimientos.innerHTML=registroMovimientoJSON;
+    }
 })
-inputMovimientoDebitar.addEventListener("click", ()=>{
-    
-})
+
 
 btnEnviar.addEventListener("click",()=>{
     containerCargar.style.display="none"
@@ -158,6 +166,12 @@ btnEnviar.addEventListener("click",()=>{
 
 
 //---------OPCIONES DE BOTON MERCADO------------//
+
+//Api de CriptoYa!
+const criptoYa="https://criptoya.com/api/dolar";
+//
+
+
 const btnMercado=document.getElementById("btnMercado");
 const containerMercado=document.getElementById("containerMercado")
 const containerApi=document.getElementById("containerApi");
@@ -169,24 +183,24 @@ btnMercado.addEventListener("click",()=>{
     containerMovimiento.style.display="none"
     containerMercado.style.display="flex"
     containerWelcomeUser.style.display="none"
+    registroMovimientos.innerHTML=""
+
 })
 
+setInterval(()=>{
+    fetch(criptoYa)
+     .then( response=>  response.json())
+     .then(({blue,oficial})=>{
+        containerApi.innerHTML=`
+        <h2>Dolar Blue: $${blue}</h2>
+        <h2>Dolar Oficial: $${oficial}`
+     })
+     .catch(error=>console.error(error))
 
-//Api de CriptoYa!
-const criptoYa="https://criptoya.com/api/dolar";
-//
+},2500)
+
+
  
-
-//------ARRAY DE MOVIMIENTOS-----//
-
-class Movimiento{
-    constructor (accion,monto){
-        this.accion=accion,
-        this.monto=monto;
-    }
-}
-
-const registerMovimientos=[];
-
+mD
 
 
