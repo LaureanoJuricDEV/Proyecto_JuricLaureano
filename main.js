@@ -11,7 +11,7 @@ const containerCargar=document.getElementById("containerCargar");
 const saldoCargar=document.getElementById("saldoCargar");
 
 
-const saldoInicial=parseInt(0);
+let saldoInicial=0;
 
 btnCargar.addEventListener("click",()=>{
     containerCargar.style.display="flex"
@@ -38,9 +38,8 @@ formCargar.addEventListener("submit", (e)=>{
        alertMonto2();
     } else{
         alertMonto1();
-       const saldoFinal=(parseInt(saldoInicial)+parseInt(montoCargar));
-       const saldoActualizado= (parseInt(saldoFinal)+parseInt(montoCargar));
-       console.log(saldoActualizado)
+        let saldoActualizado=(saldoInicial+parseInt(montoCargar))
+        console.log(saldoActualizado)
         localStorage.setItem("Movimiento", JSON.stringify(registerMovimientos))
         formCargar.reset();
        
