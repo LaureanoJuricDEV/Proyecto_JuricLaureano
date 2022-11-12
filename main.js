@@ -7,7 +7,6 @@ class Movimiento{
     }
 }
 
-
 const registerMovimientos=[];
 
 
@@ -200,7 +199,5 @@ setInterval(()=>{
 },2500)
 
 
- 
-mD
 
 
